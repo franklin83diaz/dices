@@ -6,18 +6,10 @@ import 'package:flutter/widgets.dart';
 final random = Random();
 
 class Dice {
-  bool _running = false;
-  var numberUp = 0;
   Future<int> run({int durationMiliSec = 1000}) async {
-    _running = true;
-    numberUp = 0;
     await Future.delayed(Duration(milliseconds: durationMiliSec));
-    numberUp = random.nextInt(5) + 1;
-    _running = false;
-    return numberUp;
+    return random.nextInt(5) + 1;
   }
-
-  bool get running => _running;
 }
 
 IconData getDiceIcon(int n) {
