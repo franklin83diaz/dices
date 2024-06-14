@@ -1,4 +1,5 @@
 import 'package:dice/src/logic.dart';
+import 'package:dice/src/rolling.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(const MyApp());
@@ -15,6 +16,7 @@ class _MyAppState extends State<MyApp> {
   int dice1Num = 0;
   final dice2 = Dice();
   int dice2Num = 0;
+  bool rolling = false;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -23,8 +25,13 @@ class _MyAppState extends State<MyApp> {
         body: Center(
           child: GestureDetector(
             onTap: () async {
+              setState(() {
+                rolling = true;
+              });
+              await Future.delayed(Duration(milliseconds: 500));
               final n = await dice1.run(durationMiliSec: 1);
               final n2 = await dice2.run(durationMiliSec: 1);
+              rolling = false;
               setState(() {
                 dice1Num = n;
                 dice2Num = n2;
@@ -37,17 +44,21 @@ class _MyAppState extends State<MyApp> {
                 padding: const EdgeInsets.all(20),
                 child: Column(
                   children: [
-                    Icon(
-                      getDiceIcon(dice1Num),
-                      size: 180,
-                    ),
+                    rolling
+                        ? const Rolling()
+                        : Icon(
+                            getDiceIcon(dice1Num),
+                            size: 180,
+                          ),
                     const SizedBox(
                       height: 30,
                     ),
-                    Icon(
-                      getDiceIcon(dice2Num),
-                      size: 180,
-                    ),
+                    rolling
+                        ? const Rolling()
+                        : Icon(
+                            getDiceIcon(dice2Num),
+                            size: 180,
+                          ),
                   ],
                 ),
               ),
